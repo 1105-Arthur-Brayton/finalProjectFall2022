@@ -5,6 +5,7 @@
 # import libraries and modules
 # from platform import platform
 
+import sympy as sym
 import pygame as pg
 from pygame.sprite import Sprite
 import random
@@ -92,14 +93,13 @@ class Player(Sprite):
             self.acc.x = 2.5
         keys = pg.key.get_pressed()
         if keys[pg.K_SPACE]: # floats while space is held in the direction the player was moving, still has friction
-            self.acc.y = -1.5
+            self.acc.y = -1.2
             if hits:
+                if self.vel.y > 0:
                     player.rect.top = hits[0].rect.bottom
-                    # self.acc.y = 0
-                    self.vel.y = 100
-           
-            # if self.vel.y >= 10:
-            #     self.acc.y = 1
+                    self.vel.y = 20
+                    
+        
             HINT += 1    
     def jump(self):
         self.rect.x += 1
@@ -360,6 +360,10 @@ while running:
     # this is because the vel.y will momentarily be zero because of the math
     # if I could use derivatives to determine the direction of the velocity, I could fix the lack of collision issues
     # currently, there is no distinction between if vel.y = 0 is from the top or bottom
+    if player.vel.y == 0 and sym.diff(player.vel.y) < 0:
+        if hits:
+            player.rect.top = hits[0].rect.bottom
+            player.vel.y = 10
 
     
 
