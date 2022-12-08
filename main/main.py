@@ -1,11 +1,14 @@
 # my final main file
 # sources cited
 # content from kids can code: http://kidscancode.org/blog/
+# Andrew helped with entity spawning
+# Roman Moralez helped with Sweep class
 
 # import libraries and modules
 # from platform import platform
 
 import sympy as sym
+from sympy import *
 import pygame as pg
 from pygame.sprite import Sprite
 import random
@@ -125,32 +128,33 @@ class Player(Sprite):
 
 
 class Sweep(Sprite):
-    def __init__(sweep, x, y, w, h):
+    def __init__(sweep, w, h):
         # defines sweep sprite parameters
         Sprite.__init__(sweep)
-        player.rect.x = x
-        player.rect.y = y
         sweep.w = w
         sweep.h = h
         sweep.image = pg.Surface((300, 300))
         sweep.image.fill(TEAL)
         sweep.rect = sweep.image.get_rect()
-        sweep.rect.center = (WIDTH / 2, HEIGHT / 2)
-        sweep.pos = vec(WIDTH / 2, HEIGHT / 2)
-        sweep.vel = vec(0,0)
+        sweep.rect.center = (player.pos.x, player.pos.y)
+        sweep.pos = (player.pos.x, player.pos.y)
+        sweep.vel = vec(0,10)
         sweep.acc = vec(0,0)
         
-def blast(sweep):
-    keys = pg.key.get_pressed()
-    if keys[pg.K_KP_ENTER]:
-        sweep.pos = vec(player.x, player.y)
-        color = TEAL
-        s = Sweep(x, y, color, 150, 150)
-        all_sprites.add(s)
-        sweep.add(s)
-        print("sweep")
-def update(sweep):
-    sweep.blast()
+    def blast(sweep):
+        print("Controlls Updating")
+        keys = pg.key.get_pressed()
+        if keys[pg.K_KP_ENTER]:
+            sweep.pos = vec(player.x, player.y)
+            color = TEAL
+            s = Sweep(x, y, color, 150, 150)
+            all_sprites.add(s)
+            sweep.add(s)
+            print("sweep")
+    def update(sweep):
+        print("Updating Sweep")
+        sweep.blast()
+    
 
 
 
@@ -242,6 +246,7 @@ for i in range(1):
 # add player to all sprites group
 all_sprites.add(player, plat, plat2, plat3, plat4, plat5)
 all_platforms.add(plat, plat2, plat3, plat4, plat5)
+
 
 
 # Timer
@@ -364,7 +369,7 @@ while running:
         if hits:
             player.rect.top = hits[0].rect.bottom
             player.vel.y = 10
-
+# using derivatives from sympy to try to fix my collision issues as described above
     
 
     if FRAME % RAMP == 0 and SCORE < 15:
