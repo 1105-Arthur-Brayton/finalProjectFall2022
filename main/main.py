@@ -7,34 +7,42 @@
 # import libraries and modules
 # from platform import platform
 
+from settings import *
+# Using pathlib and OS to create directories and add files
+from pathlib import Path
+import os
+# Using sympy for derivatives
 import sympy as sym
-from sympy import *
 import pygame as pg
 from pygame.sprite import Sprite
 import random
 # from random import randint
 
+# using tkinter to create a usable window
+# import the required libraries
+from tkinter import *
+from tkinter import ttk
 
 
 vec = pg.math.Vector2
 
 # game settings 
-WIDTH = 1280
-HEIGHT = 720
-FPS = 30
+# WIDTH = 1280
+# HEIGHT = 720
+# FPS = 30
 
 
 # player settings
-PLAYER_GRAVITY = 3
+# PLAYER_GRAVITY = 3
 
 # define colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-PINK = (255, 192, 203)
-TEAL = (177, 255, 255)
+# WHITE = (255, 255, 255)
+# BLACK = (0, 0, 0)
+# RED = (255, 0, 0)
+# GREEN = (0, 255, 0)
+# BLUE = (0, 0, 255)
+# PINK = (255, 192, 203)
+# TEAL = (177, 255, 255)
 
 # score
 SCORE = 5
