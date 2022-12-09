@@ -15,3 +15,9 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 PINK = (255, 192, 203)
 TEAL = (177, 255, 255)
+
+# Timer
+FRAME = 1
+TIMER = 0
+RAMP = 150
+# ramp sets the time in ticks when the score will decrease

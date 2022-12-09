@@ -55,6 +55,12 @@ MOBS = 0
 # to get rid of the hint about the space bar - press space
 HINT = 0
 
+# Limits consecutive seconds that player can float
+FUELSPENT = 0
+FUEL = FRAME % 30 - FUELSPENT % 30
+
+
+
 def draw_text(text, size, color, x, y):
         font_name = pg.font.match_font('arial')
         font = pg.font.Font(font_name, size)
@@ -93,6 +99,7 @@ class Player(Sprite):
 
     # what happens when a key gets pressed: horizontal movement
     def controls(self):
+        global FUELSPENT
         global HINT
         keys = pg.key.get_pressed()
         if keys[pg.K_r]:
@@ -103,12 +110,16 @@ class Player(Sprite):
         if keys[pg.K_RIGHT]:
             self.acc.x = 2.5
         keys = pg.key.get_pressed()
-        if keys[pg.K_SPACE]: # floats while space is held in the direction the player was moving, still has friction
-            self.acc.y = -1.2
-            if hits:
-                if self.vel.y > 0:
-                    player.rect.top = hits[0].rect.bottom
-                    self.vel.y = 20
+        if keys[pg.K_SPACE] and FUEL > 0: # floats while space is held in the direction the player was moving, still has friction
+            FUELSPENT += 20
+            if hits and self.vel.y > 0:
+                self.acc.y = 0
+                self.vel.y = -.000000001
+            else:
+                self.acc.y = -1.2
+                
+    
+                    
                     
         
             HINT += 1    
@@ -257,11 +268,11 @@ all_platforms.add(plat, plat2, plat3, plat4, plat5)
 
 
 
-# Timer
-FRAME = 1
-TIMER = 0
-RAMP = 150
-# ramp sets the time in ticks when the score will decrease
+# # Timer
+# FRAME = 1
+# TIMER = 0
+# RAMP = 150
+# # ramp sets the time in ticks when the score will decrease
 
 # Game loop
 running = True
@@ -364,7 +375,7 @@ while running:
             player.pos.y = hits[0].rect.top
             player.vel.y = 0
             # negative vel means player is moving down, so when it hits a platform it needs to rest
-    if player.vel.y < 0:
+    if player.vel.y < -.00000000001:
         if hits:
             player.rect.top = hits[0].rect.bottom
             player.vel.y = 10
@@ -402,6 +413,7 @@ while running:
     # draw_text("Enemies: " + str(i in range(e)), 30, WHITE, WIDTH / 4, 70)
     draw_text("Kills: " + str(MOBS), 30, WHITE, WIDTH / 4, 50)
     draw_text("POINTS: " + str(SCORE), 24, WHITE, WIDTH / 2, HEIGHT / 20)
+    draw_text("FUEL: " + str(FUEL), 24, WHITE, WIDTH / 4, HEIGHT / 100)
     draw_text("Timer: " + str(int(TIMER)), 24, WHITE, WIDTH / 2, HEIGHT / 10)
     draw_text("CONTROLS", 24, WHITE, WIDTH - 150, 10)
     draw_text("Arrow keys:       Movement", 24, WHITE, WIDTH - 175, 30)   
