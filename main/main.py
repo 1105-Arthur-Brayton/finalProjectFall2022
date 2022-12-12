@@ -364,11 +364,6 @@ while running:
     # this is because the vel.y will momentarily be zero because of the math
     # if I could use derivatives to determine the direction of the velocity, I could fix the lack of collision issues
     # currently, there is no distinction between if vel.y = 0 is from the top or bottom
-    if player.vel.y == 0 and sym.diff(player.vel.y) < 0:
-        if hits:
-            player.rect.top = hits[0].rect.bottom
-            player.vel.y = 10
-# using derivatives from sympy to try to fix my collision issues as described above
     
 
     if FRAME % RAMP == 0 and SCORE < 15:
