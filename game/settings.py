@@ -1,8 +1,11 @@
 # Game settings
  
+# Window dimensions
 WIDTH = 1280
 HEIGHT = 720
+
 FPS = 30
+
 
 PLAYER_GRAVITY = 3
 

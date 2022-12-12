@@ -1,11 +1,10 @@
-# my final main file
+# Brayton Arthur
 # sources cited
 # content from kids can code: http://kidscancode.org/blog/
 # Andrew helped with entity spawning
 # Roman Moralez helped with Sweep class
 
 # import libraries and modules
-# from platform import platform
 
 from settings import *
 import pygame as pg
@@ -13,35 +12,18 @@ from pygame.sprite import Sprite
 import random
 # from random import randint
 
-
 vec = pg.math.Vector2
-
-# game settings 
-# WIDTH = 1280
-# HEIGHT = 720
-# FPS = 30
-
-
-# player settings
-# PLAYER_GRAVITY = 3
-
-# define colors
-# WHITE = (255, 255, 255)
-# BLACK = (0, 0, 0)
-# RED = (255, 0, 0)
-# GREEN = (0, 255, 0)
-# BLUE = (0, 0, 255)
-# PINK = (255, 192, 203)
-# TEAL = (177, 255, 255)
 
 # score
 SCORE = 5
 
 # difficulty
-DIFFICULTY = int(input("Difficulty: 0 being the easiest, 4 being the hardest: "))
+# DIFFICULTY = int(input("Difficulty: 0 being the easiest, 4 being the hardest: "))
 
 # amount of enemies killed
 MOBS = 0
+# amount of enemies active
+ENEMIES = 1
 # to get rid of the hint about the space bar - press space
 HINT = 0
 
@@ -59,22 +41,14 @@ class Player(Sprite):
     def __init__(self):
         # defines player sprite parameters
         Sprite.__init__(self)
-        if DIFFICULTY == 4:
-            self.image = pg.Surface((50, 50))
-        if DIFFICULTY == 3:
-            self.image = pg.Surface((75, 75))
-        if DIFFICULTY == 2:
-            self.image = pg.Surface((100,100))
-        if DIFFICULTY == 1:   
-            self.image = pg.Surface((125,125))
-        if DIFFICULTY == 0:  
-            self.image = pg.Surface((150,150))
+        self.image = pg.Surface((50, 50))
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH/2, HEIGHT/2)
         self.pos = vec(WIDTH/2, HEIGHT/2)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
+        print("Player class")
  
 
         
@@ -113,46 +87,41 @@ class Player(Sprite):
     def update(self):
         self.acc = vec(0, PLAYER_GRAVITY)
         self.controls()
-        # hits = pg.sprite.spritecollide(self, all_platforms, False)
-        # if hits:
-        #     print("collision")
         # friction
         self.acc.x += self.vel.x * -0.1
         self.acc.y += self.vel.y * -0.1
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
-        # self.rect.x += self.xvel
-        # self.rect.y += self.yvel
         self.rect.midbottom = self.pos
 
 
 class Sweep(Sprite):
-    def __init__(sweep, w, h):
+    def __init__(self, w, h):
         # defines sweep sprite parameters
-        Sprite.__init__(sweep)
-        sweep.w = w
-        sweep.h = h
-        sweep.image = pg.Surface((300, 300))
-        sweep.image.fill(TEAL)
-        sweep.rect = sweep.image.get_rect()
-        sweep.rect.center = (player.pos.x, player.pos.y)
-        sweep.pos = (player.pos.x, player.pos.y)
-        sweep.vel = vec(0,10)
-        sweep.acc = vec(0,0)
+        Sprite.__init__(self)
+        self.w = w
+        self.h = h
+        self.image = pg.Surface((300, 300))
+        self.image.fill(TEAL)
+        self.rect = self.image.get_rect()
+        self.rect.center = (player.pos.x, player.pos.y)
+        self.pos = (player.pos.x, player.pos.y)
+        self.vel = vec(0,10)
+        self.acc = vec(0,0)
         
-    def blast(sweep):
+    def blast(self):
         print("Controlls Updating")
         keys = pg.key.get_pressed()
         if keys[pg.K_KP_ENTER]:
-            sweep.pos = vec(player.x, player.y)
+            self.pos = vec(player.x, player.y)
             color = TEAL
             s = Sweep(x, y, color, 150, 150)
             all_sprites.add(s)
             sweep.add(s)
             print("sweep")
-    def update(sweep):
+    def update(self):
         print("Updating Sweep")
-        sweep.blast()
+        self.blast()
     
 
 
@@ -290,6 +259,8 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         MOBS += 1
+        if SCORE == 15:
+            ENEMIES + 1
     if kill and 15 <= SCORE <= 25: 
         SCORE += 1
         x = random.randint(0, WIDTH)
@@ -301,6 +272,8 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         MOBS += 1
+        if SCORE == 25:
+            ENEMIES + 1
     if kill and 25 <= SCORE <= 35: 
         SCORE += 1
         x = random.randint(0, WIDTH)
@@ -312,6 +285,8 @@ while running:
         all_sprites.add(e)
         enemies.add(e)    
         MOBS += 1
+        if SCORE == 35:
+            ENEMIES + 1
     if kill and 35 <= SCORE <= 45: 
         SCORE += 1
         x = random.randint(0, WIDTH)
@@ -323,6 +298,8 @@ while running:
         all_sprites.add(e)
         enemies.add(e)  
         MOBS += 1
+        if SCORE == 45:
+            ENEMIES + 1
     if kill and 45 <= SCORE <= 55: 
         SCORE += 1
         x = random.randint(0, WIDTH)
@@ -333,7 +310,9 @@ while running:
         e = Enemy(x, y, color, 25, 25)
         all_sprites.add(e)
         enemies.add(e)    
-        MOBS += 1          
+        MOBS += 1   
+        if SCORE == 55:
+            ENEMIES + 1       
     # every time a point threshold is crossed, even if it isn't the first time, add another enemy
     '''
     displace = pg.sprite.spritecollide(plat or plat2 or plat3 or plat4 or plat5, enemies, True)
@@ -385,7 +364,7 @@ while running:
     # draw the background screen
     screen.fill(BLACK)
     
-    # draw_text("Enemies: " + str(i in range(e)), 30, WHITE, WIDTH / 4, 70)
+    draw_text("Enemies: " + str(ENEMIES), 30, WHITE, WIDTH / 4, 20)
     draw_text("Kills: " + str(MOBS), 30, WHITE, WIDTH / 4, 50)
     draw_text("POINTS: " + str(SCORE), 24, WHITE, WIDTH / 2, HEIGHT / 20)
     draw_text("Timer: " + str(int(TIMER)), 24, WHITE, WIDTH / 2, HEIGHT / 10)
@@ -401,9 +380,6 @@ while running:
     if SCORE < 0:
         draw_text("Surprise! No stakes!", 30, WHITE, WIDTH / 2, HEIGHT / 2)
     # draws on-screen text
-
-    # Bug testing 
-    # draw_text("Velocity x: " + str())    
 
     # draw all sprites
     all_sprites.draw(screen)
