@@ -114,25 +114,7 @@ class Sweep(Sprite):
         # self.pos = (player.pos.x, player.pos.y)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
-        print("Sweep class")
         
-    # def blast(self):
-    #     print("Controlls Updating")
-    #     keys = pg.key.get_pressed()
-    #     if keys[pg.K_g]:
-    #         # self.pos = vec(self.rect.x, self.rect.y)
-    #         color = TEAL
-    #         s = Sweep(player.rect.x, player.rect.y, color)
-    #         all_sprites.add(s)
-    #         sweeps.add(s)
-    #         print("sweep")
-    # def update(self):
-    #     print("Updating Sweep")
-    #     self.blast()
-    
-
-
-
 
 # creates platform class
 # platforms is sublass of sprite
@@ -190,19 +172,16 @@ all_platforms = pg.sprite.Group()
 enemies = pg.sprite.Group()
 sweeps = pg.sprite.Group()
 
-# instantiate the player class
+# instantiate classes
 player = Player()
-# enemy1 = Enemy(100, 200, RED, 25, 25)
-# plat = Platform(x, y, width, height)
 plat = Platform(WIDTH/2, HEIGHT/2 + 100, 100, 10)
 plat2 = Platform(0 - WIDTH / 2, HEIGHT/1.05, WIDTH * 2, 35) # Bottom
 plat3 = Platform(50, 200, 200, 10)
 plat4 = Platform(800, 375, 200, 10)
 plat5 = Platform(0 - WIDTH / 2, 0, WIDTH * 2, 10) # Top 
 # elevator = Elevator(0, 0, 50, 100, 10)
-# sweep
-colors = [WHITE, RED, GREEN, BLUE]
 
+colors = [WHITE, RED, GREEN, BLUE]
 
 for i in range(1):
     x = random.randint(0, WIDTH)
@@ -217,18 +196,9 @@ for i in range(1):
 # creates the first enemy 
 # source: Andrew
 
-
 # add player to all sprites group
 all_sprites.add(player, plat, plat2, plat3, plat4, plat5)
 all_platforms.add(plat, plat2, plat3, plat4, plat5)
-
-
-
-# # Timer
-# FRAME = 1
-# TIMER = 0
-# RAMP = 150
-# # ramp sets the time in ticks when the score will decrease
 
 # Game loop
 running = True
@@ -253,7 +223,7 @@ while running:
     all_platforms.update()
     # sweeps.update()
     hits = pg.sprite.spritecollide(player, all_platforms, False)
-    kill = pg.sprite.spritecollide(player, enemies, True)
+    kill = pg.sprite.spritecollide(player or sweeps, enemies, True)
     # Begin 'spawn block'
     if kill and SCORE <= 15:
         SCORE += 1
