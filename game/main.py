@@ -49,25 +49,19 @@ class Player(Sprite):
         self.vel = vec(0,0)
         self.acc = vec(0,0)
         print("Player class")
- 
-
         
-        
-         
 
-
-    # what happens when a key gets pressed: horizontal movement
+    # what happens when certain keys are pressed
     def controls(self):
         keys = pg.key.get_pressed()
         if keys[pg.K_r]:
             self.pos = vec(WIDTH / 2, HEIGHT / 2) # resets position
         if keys[pg.K_LEFT]:
             self.acc.x = -2.5
-            # print(self.vel)
         if keys[pg.K_RIGHT]:
             self.acc.x = 2.5
         keys = pg.key.get_pressed()
-        if keys[pg.K_SPACE] > 0: # floats while space is held in the direction the player was moving, still has friction
+        if keys[pg.K_SPACE] > 0: # sets acceleration to make the player rise while held
             global HINT
             if hits and self.vel.y > 0:
                 self.acc.y = 0
@@ -76,6 +70,18 @@ class Player(Sprite):
             else:
                 self.acc.y = -1.2
                 HINT += 1 
+        if keys[pg.K_g]:
+            print("Controlls Updating")
+            if keys[pg.K_g]:
+                # self.pos = vec(self.rect.x, self.rect.y)
+                color = TEAL
+                s = Sweep(150, 150, player.rect.x, player.rect.y, color)
+                all_sprites.add(s)
+                sweeps.add(s)
+                print("sweep")
+    def update(self):
+        print("Updating Sweep")
+        self.blast()
                
     def jump(self):
         self.rect.x += 1
@@ -96,32 +102,33 @@ class Player(Sprite):
 
 
 class Sweep(Sprite):
-    def __init__(self, w, h):
+    def __init__(self, w, h, x, y, color):
         # defines sweep sprite parameters
         Sprite.__init__(self)
         self.w = w
         self.h = h
         self.image = pg.Surface((300, 300))
-        self.image.fill(TEAL)
+        self.image.fill(color)
         self.rect = self.image.get_rect()
-        self.rect.center = (player.pos.x, player.pos.y)
-        self.pos = (player.pos.x, player.pos.y)
-        self.vel = vec(0,10)
+        self.rect.center = (player.rect.x, player.rect.y)
+        # self.pos = (player.pos.x, player.pos.y)
+        self.vel = vec(0,0)
         self.acc = vec(0,0)
+        print("Sweep class")
         
-    def blast(self):
-        print("Controlls Updating")
-        keys = pg.key.get_pressed()
-        if keys[pg.K_KP_ENTER]:
-            self.pos = vec(player.x, player.y)
-            color = TEAL
-            s = Sweep(x, y, color, 150, 150)
-            all_sprites.add(s)
-            sweep.add(s)
-            print("sweep")
-    def update(self):
-        print("Updating Sweep")
-        self.blast()
+    # def blast(self):
+    #     print("Controlls Updating")
+    #     keys = pg.key.get_pressed()
+    #     if keys[pg.K_g]:
+    #         # self.pos = vec(self.rect.x, self.rect.y)
+    #         color = TEAL
+    #         s = Sweep(player.rect.x, player.rect.y, color)
+    #         all_sprites.add(s)
+    #         sweeps.add(s)
+    #         print("sweep")
+    # def update(self):
+    #     print("Updating Sweep")
+    #     self.blast()
     
 
 
@@ -181,7 +188,7 @@ clock = pg.time.Clock()
 all_sprites = pg.sprite.Group()
 all_platforms = pg.sprite.Group()
 enemies = pg.sprite.Group()
-sweep = pg.sprite.Group()
+sweeps = pg.sprite.Group()
 
 # instantiate the player class
 player = Player()
@@ -244,10 +251,11 @@ while running:
     # update all sprites
     all_sprites.update()
     all_platforms.update()
-    sweep.update()
+    # sweeps.update()
     hits = pg.sprite.spritecollide(player, all_platforms, False)
     kill = pg.sprite.spritecollide(player, enemies, True)
-    if kill and SCORE < 15:
+    # Begin 'spawn block'
+    if kill and SCORE <= 15:
         SCORE += 1
         print("Kill")
         x = random.randint(15, WIDTH)
