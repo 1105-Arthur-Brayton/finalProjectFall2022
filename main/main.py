@@ -8,20 +8,10 @@
 # from platform import platform
 
 from settings import *
-# Using pathlib and OS to create directories and add files
-from pathlib import Path
-import os
-# Using sympy for derivatives
-import sympy as sym
 import pygame as pg
 from pygame.sprite import Sprite
 import random
 # from random import randint
-
-# using tkinter to create a usable window
-# import the required libraries
-from tkinter import *
-from tkinter import ttk
 
 
 vec = pg.math.Vector2
