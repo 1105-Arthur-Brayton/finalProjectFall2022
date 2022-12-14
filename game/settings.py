@@ -24,3 +24,5 @@ FRAME = 1
 TIMER = 0
 RAMP = 150
 # ramp sets the time in ticks when the score will decrease
+
+SWEEP_DELAY = 0

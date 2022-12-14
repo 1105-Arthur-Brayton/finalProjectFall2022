@@ -71,14 +71,16 @@ class Player(Sprite):
                 self.acc.y = -1.2
                 HINT += 1 
         if keys[pg.K_g]:
+            global SWEEP_DELAY
             print("Controlls Updating")
-            if keys[pg.K_g]:
+            if keys[pg.K_g] and SWEEP_DELAY == 0:
                 # self.pos = vec(self.rect.x, self.rect.y)
                 color = TEAL
                 s = Sweep(150, 150, player.rect.x, player.rect.y, color)
                 all_sprites.add(s)
                 sweeps.add(s)
                 print("sweep")
+                SWEEP_DELAY += 1
     def update(self):
         print("Updating Sweep")
         self.blast()
@@ -107,7 +109,7 @@ class Sweep(Sprite):
         Sprite.__init__(self)
         self.w = w
         self.h = h
-        self.image = pg.Surface((300, 300))
+        self.image = pg.Surface((250, 250))
         self.image.fill(color)
         self.rect = self.image.get_rect()
         self.rect.center = (player.rect.x, player.rect.y)
@@ -223,7 +225,8 @@ while running:
     all_platforms.update()
     # sweeps.update()
     hits = pg.sprite.spritecollide(player, all_platforms, False)
-    kill = pg.sprite.spritecollide(player or sweeps, enemies, True)
+    kill = pg.sprite.spritecollide(player, enemies, True) 
+    
     # Begin 'spawn block'
     if kill and SCORE <= 15:
         SCORE += 1
@@ -337,6 +340,10 @@ while running:
         RAMP = 90
         SCORE -= 10
     # establishes the point thresholds and how many points are lost per 150 ticks
+
+    if FRAME % 15 == 0:
+        all_sprites.remove(sweeps)
+        sweeps.remove(sweeps)
     
     ############ Draw ################
     # draw the background screen
@@ -366,6 +373,10 @@ while running:
     pg.display.flip()
     FRAME += 1
     TIMER += 1 / 30
+    if SWEEP_DELAY > 0:
+        SWEEP_DELAY -= 1 / 60
+    if SWEEP_DELAY < 0:
+        SWEEP_DELAY = 0
     # adds to system timer and human timer
     if SCORE >= 56:    
         TIMER = 0
