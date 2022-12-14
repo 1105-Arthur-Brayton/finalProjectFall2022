@@ -26,7 +26,7 @@ RAMP = 150
 # ramp sets the time in ticks when the score will decrease
 
 # score. Starts at 5 because PhaseOne is slow
-SCORE = 5
+SCORE = 100000
 
 # simplifies the spawn block
 PhaseOne = SCORE <= 15

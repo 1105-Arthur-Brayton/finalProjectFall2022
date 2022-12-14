@@ -288,20 +288,20 @@ while running:
     
     
 
-    if FRAME % RAMP == 0 and PhaseOne:
+    if FRAME % RAMP == 0 and SCORE <= 15:
         SCORE -= 2
-    if FRAME % RAMP == 0 and PhaseTwo:
+    if FRAME % RAMP == 0 and 15 <= SCORE <= 25:
         SCORE -= 5
-    if FRAME % RAMP == 0 and PhaseThree:
+    if FRAME % RAMP == 0 and 25 <= SCORE <= 35:
         SCORE -= 10
-    if FRAME % RAMP == 0 and PhaseFour:
+    if FRAME % RAMP == 0 and 35 <= SCORE <= 45:
         SCORE -= 15    
-    # if FRAME % RAMP == 0 and PhaseFive:
+    # if FRAME % RAMP == 0 and 45 <= SCORE <= 55:
     #     SCORE -= 20 
     '''
     Previous comment is left in to show the possible customization
     '''
-    if FRAME % RAMP == 0 and PhaseFive: # Lowers point penalty but increases frequency
+    if FRAME % RAMP == 0 and 45 <= SCORE <= 55: # Lowers point penalty but increases frequency
         RAMP = 90
         SCORE -= 10
     # establishes the point thresholds and how many points are lost per 150 ticks
