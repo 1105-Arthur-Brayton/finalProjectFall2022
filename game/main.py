@@ -5,7 +5,6 @@
 # Roman Moralez helped with Sweep class
 
 # import libraries and modules
-
 from settings import *
 import pygame as pg
 from pygame.sprite import Sprite
@@ -66,7 +65,7 @@ class Player(Sprite):
                 self.vel.y = -.000000001
                 HINT += 1 
             else:
-                self.acc.y = -1.2
+                self.acc.y = -1.8
                 HINT += 1 
         if keys[pg.K_g]:
             global SWEEP_DELAY
@@ -109,6 +108,7 @@ class Sweep(Sprite):
         self.image = pg.Surface((250, 250))
         self.image.fill(color)
         self.rect = self.image.get_rect()
+        self.rect.center = (w/2, h/2)
         self.rect.center = (player.rect.x, player.rect.y)
         # self.pos = (player.pos.x, player.pos.y)
         self.vel = vec(0,0)
@@ -161,7 +161,7 @@ class Enemy(Sprite):
 pg.init()
 pg.mixer.init()
 screen = pg.display.set_mode((WIDTH, HEIGHT))
-pg.display.set_caption("My Game...")
+pg.display.set_caption("Attack of the Cubes")
 clock = pg.time.Clock()
   
 # create a group for all sprites
@@ -346,7 +346,7 @@ while running:
     # adds to system timer and human timer
     if SCORE >= 56:    
         TIMER = 0
-    # game is reliant on TIMER. Stops the game without crashing or exiting. Player can still move and eat but no points are added
+        # Doesn't stop the game, just turns off timer and point decrease
     if SWEEP_DELAY > 0:
         SWEEP_DELAY -= 1 / 60
     if SWEEP_DELAY < 0:
