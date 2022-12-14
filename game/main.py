@@ -21,9 +21,9 @@ SCORE = 5
 # DIFFICULTY = int(input("Difficulty: 0 being the easiest, 4 being the hardest: "))
 
 # amount of enemies killed
-MOBS = 0
+enemies_killed = 0
 # amount of enemies active
-ENEMIES = 1
+enemies_on_screen = 1
 # to get rid of the hint about the space bar - press space
 HINT = 0
 
@@ -48,7 +48,6 @@ class Player(Sprite):
         self.pos = vec(WIDTH/2, HEIGHT/2)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
-        print("Player class")
         
 
     # what happens when certain keys are pressed
@@ -72,17 +71,16 @@ class Player(Sprite):
                 HINT += 1 
         if keys[pg.K_g]:
             global SWEEP_DELAY
-            print("Controlls Updating")
             if keys[pg.K_g] and SWEEP_DELAY == 0:
                 # self.pos = vec(self.rect.x, self.rect.y)
                 color = TEAL
                 s = Sweep(150, 150, player.rect.x, player.rect.y, color)
                 all_sprites.add(s)
                 sweeps.add(s)
-                print("sweep")
                 SWEEP_DELAY += 1
+        if keys[pg.K_ESCAPE]:
+            pg.quit() # "pygame.error: display Surface quit" Still does what it's supposed to I guess
     def update(self):
-        print("Updating Sweep")
         self.blast()
                
     def jump(self):
@@ -188,8 +186,8 @@ colors = [WHITE, RED, GREEN, BLUE]
 for i in range(1):
     x = random.randint(0, WIDTH)
     y = random.randint(15, HEIGHT - 40)
-    movex = random.randint(-2, 2)
-    movey = random.randint(-2, 2)
+    # movex = random.randint(-2, 2)
+    # movey = random.randint(-2, 2)
     color = random.choice(colors)
     e = Enemy(x, y, color, 25, 25)
     all_sprites.add(e)
@@ -233,67 +231,57 @@ while running:
         print("Kill")
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
-        movex = random.randint(-2, 2)
-        movey = random.randint(-2, 2)
         color = random.choice(colors)
         e = Enemy(x, y, color, 25, 25)
         all_sprites.add(e)
         enemies.add(e)
-        MOBS += 1
-        if SCORE == 15:
-            ENEMIES + 1
+        enemies_killed += 1
+        if kill and SCORE == 14:
+            enemies_on_screen += 1
     if kill and 15 <= SCORE <= 25: 
         SCORE += 1
         x = random.randint(0, WIDTH)
         y = random.randint(0, HEIGHT - 40)
-        movex = random.randint(-2, 2)
-        movey = random.randint(-2, 2)
         color = random.choice(colors)
         e = Enemy(x, y, color, 25, 25)
         all_sprites.add(e)
         enemies.add(e)
-        MOBS += 1
-        if SCORE == 25:
-            ENEMIES + 1
+        enemies_killed += 1
+        if kill and SCORE == 24:
+            enemies_on_screen += 1
     if kill and 25 <= SCORE <= 35: 
         SCORE += 1
         x = random.randint(0, WIDTH)
         y = random.randint(0, HEIGHT - 40)
-        movex = random.randint(-2, 2)
-        movey = random.randint(-2, 2)
         color = random.choice(colors)
         e = Enemy(x, y, color, 25, 25)
         all_sprites.add(e)
         enemies.add(e)    
-        MOBS += 1
-        if SCORE == 35:
-            ENEMIES + 1
+        enemies_killed += 1
+        if kill and SCORE == 34:
+            enemies_on_screen += 1
     if kill and 35 <= SCORE <= 45: 
         SCORE += 1
         x = random.randint(0, WIDTH)
         y = random.randint(0, HEIGHT - 40)
-        movex = random.randint(-2, 2)
-        movey = random.randint(-2, 2)
         color = random.choice(colors)
         e = Enemy(x, y, color, 25, 25)
         all_sprites.add(e)
         enemies.add(e)  
-        MOBS += 1
-        if SCORE == 45:
-            ENEMIES + 1
+        enemies_killed += 1
+        if kill and SCORE == 44:
+            enemies_on_screen += 1
     if kill and 45 <= SCORE <= 55: 
         SCORE += 1
         x = random.randint(0, WIDTH)
         y = random.randint(0, HEIGHT - 40)
-        movex = random.randint(-2, 2)
-        movey = random.randint(-2, 2)
         color = random.choice(colors)
         e = Enemy(x, y, color, 25, 25)
         all_sprites.add(e)
         enemies.add(e)    
-        MOBS += 1   
-        if SCORE == 55:
-            ENEMIES + 1       
+        enemies_killed += 1   
+        if kill and SCORE == 54:
+            enemies_on_screen += 1       
     # every time a point threshold is crossed, even if it isn't the first time, add another enemy
     '''
     displace = pg.sprite.spritecollide(plat or plat2 or plat3 or plat4 or plat5, enemies, True)
@@ -326,7 +314,7 @@ while running:
     # currently, there is no distinction between if vel.y = 0 is from the top or bottom
     
 
-    if FRAME % RAMP == 0 and SCORE < 15:
+    if FRAME % RAMP == 0 and SCORE <= 15:
         SCORE -= 2
     if FRAME % RAMP == 0 and 15 < SCORE <= 25:
         SCORE -= 5
@@ -349,8 +337,8 @@ while running:
     # draw the background screen
     screen.fill(BLACK)
     
-    draw_text("Enemies: " + str(ENEMIES), 30, WHITE, WIDTH / 4, 20)
-    draw_text("Kills: " + str(MOBS), 30, WHITE, WIDTH / 4, 50)
+    draw_text("Enemies: " + str(enemies_on_screen), 30, WHITE, WIDTH / 4, 20)
+    draw_text("Kills: " + str(enemies_killed), 30, WHITE, WIDTH / 4, 50)
     draw_text("POINTS: " + str(SCORE), 24, WHITE, WIDTH / 2, HEIGHT / 20)
     draw_text("Timer: " + str(int(TIMER)), 24, WHITE, WIDTH / 2, HEIGHT / 10)
     draw_text("CONTROLS", 24, WHITE, WIDTH - 150, 10)
@@ -383,5 +371,4 @@ while running:
 
 
     
-
 pg.quit()
