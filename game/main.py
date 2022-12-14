@@ -219,6 +219,7 @@ while running:
     # sweeps.update()
     hits = pg.sprite.spritecollide(player, all_platforms, False)
     kill = pg.sprite.spritecollide(player, enemies, True) 
+   #gg sweep_kill = pg.sprite.spritecollide(sweeps, enemies, True)
     
     '''Begin 'spawn block' '''
     if kill and SCORE == 14:
