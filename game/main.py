@@ -14,9 +14,6 @@ import random
 
 vec = pg.math.Vector2
 
-# score
-SCORE = 5
-
 # difficulty
 # DIFFICULTY = int(input("Difficulty: 0 being the easiest, 4 being the hardest: "))
 
@@ -26,6 +23,8 @@ enemies_killed = 0
 enemies_on_screen = 1
 # to get rid of the hint about the space bar - press space
 HINT = 0
+# SWEEP_DELAY must equal zero to be used. This is a cooldown
+SWEEP_DELAY = 0
 
 
 def draw_text(text, size, color, x, y):
@@ -158,7 +157,6 @@ class Enemy(Sprite):
         self.pos = vec(self.x, self.y)
         
         
-
 # init pygame and create a window
 pg.init()
 pg.mixer.init()
@@ -206,9 +204,6 @@ while running:
     # keep the loop running using clock
     clock.tick(FPS)
     
-    
-
-
     for event in pg.event.get():
         # check for closed window
         if event.type == pg.QUIT:
@@ -225,79 +220,59 @@ while running:
     hits = pg.sprite.spritecollide(player, all_platforms, False)
     kill = pg.sprite.spritecollide(player, enemies, True) 
     
-    # Begin 'spawn block'
-    if kill and SCORE <= 15:
-        SCORE += 1
-        print("Kill")
+    '''Begin 'spawn block' '''
+    if kill and SCORE == 14:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
         e = Enemy(x, y, color, 25, 25)
         all_sprites.add(e)
         enemies.add(e)
-        enemies_killed += 1
-        if kill and SCORE == 14:
-            enemies_on_screen += 1
-    if kill and 15 <= SCORE <= 25: 
-        SCORE += 1
-        x = random.randint(0, WIDTH)
-        y = random.randint(0, HEIGHT - 40)
+        enemies_on_screen += 1
+    if kill and SCORE == 24:
+        x = random.randint(15, WIDTH)
+        y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
         e = Enemy(x, y, color, 25, 25)
         all_sprites.add(e)
         enemies.add(e)
-        enemies_killed += 1
-        if kill and SCORE == 24:
-            enemies_on_screen += 1
-    if kill and 25 <= SCORE <= 35: 
-        SCORE += 1
-        x = random.randint(0, WIDTH)
-        y = random.randint(0, HEIGHT - 40)
+        enemies_on_screen += 1
+    if kill and SCORE == 34:
+        x = random.randint(15, WIDTH)
+        y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
         e = Enemy(x, y, color, 25, 25)
         all_sprites.add(e)
-        enemies.add(e)    
-        enemies_killed += 1
-        if kill and SCORE == 34:
-            enemies_on_screen += 1
-    if kill and 35 <= SCORE <= 45: 
-        SCORE += 1
-        x = random.randint(0, WIDTH)
-        y = random.randint(0, HEIGHT - 40)
+        enemies.add(e)
+        enemies_on_screen += 1
+    if kill and SCORE == 44:
+        x = random.randint(15, WIDTH)
+        y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
         e = Enemy(x, y, color, 25, 25)
         all_sprites.add(e)
-        enemies.add(e)  
-        enemies_killed += 1
-        if kill and SCORE == 44:
-            enemies_on_screen += 1
-    if kill and 45 <= SCORE <= 55: 
-        SCORE += 1
-        x = random.randint(0, WIDTH)
-        y = random.randint(0, HEIGHT - 40)
+        enemies.add(e)
+        enemies_on_screen += 1
+    if kill and SCORE == 54:
+        x = random.randint(15, WIDTH)
+        y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
         e = Enemy(x, y, color, 25, 25)
         all_sprites.add(e)
-        enemies.add(e)    
-        enemies_killed += 1   
-        if kill and SCORE == 54:
-            enemies_on_screen += 1       
+        enemies.add(e)
+        enemies_on_screen += 1    
     # every time a point threshold is crossed, even if it isn't the first time, add another enemy
-    '''
-    displace = pg.sprite.spritecollide(plat or plat2 or plat3 or plat4 or plat5, enemies, True)
-    if displace: 
-        print("Displace")
-        x = random.randint(0, WIDTH)
-        y = random.randint(40, HEIGHT)
-        movex = random.randint(-2, 2)
-        movey = random.randint(-2, 2)
+    if kill:
+        SCORE += 1
+        x = random.randint(15, WIDTH)
+        y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
         e = Enemy(x, y, color, 25, 25)
         all_sprites.add(e)
         enemies.add(e)
-    '''
-    # supposed to move enemies if they spawn inside a platform. Doesn't work. Changed parameters of enemy spawns to fix
-
+        enemies_killed += 1      
+    ''' end 'spawn block'  '''
+   
     if player.vel.y > 0:
         if hits:
             player.pos.y = hits[0].rect.top
@@ -307,29 +282,31 @@ while running:
         if hits:
             player.rect.top = hits[0].rect.bottom
             player.vel.y = 10
-            # positive vel means player is moving up, so it should be set to the bottom and make the velocity from negative to positive
-    # sometimes, with enough intial velocity, the player will phase through from the bottom
-    # this is because the vel.y will momentarily be zero because of the math
-    # if I could use derivatives to determine the direction of the velocity, I could fix the lack of collision issues
-    # currently, there is no distinction between if vel.y = 0 is from the top or bottom
+            # positive vel means player is moving up, so it should be set to the bottom and make the velocity positive
+            # this does not apply while player is 'floating' with spacebar. that is by design to prevent collision issues
+            # currently almost unused, but will be important if someone modifies this code and adjusts the positioning of platforms
+    
     
 
-    if FRAME % RAMP == 0 and SCORE <= 15:
+    if FRAME % RAMP == 0 and PhaseOne:
         SCORE -= 2
-    if FRAME % RAMP == 0 and 15 < SCORE <= 25:
+    if FRAME % RAMP == 0 and PhaseTwo:
         SCORE -= 5
-    if FRAME % RAMP == 0 and 25 < SCORE <= 35:
+    if FRAME % RAMP == 0 and PhaseThree:
         SCORE -= 10
-    if FRAME % RAMP == 0 and 35 < SCORE <= 45:
+    if FRAME % RAMP == 0 and PhaseFour:
         SCORE -= 15    
-    # if FRAME % RAMP == 0 and 45 < SCORE <= 55:
-    #     SCORE -= 20
-    if FRAME % RAMP == 0 and 45 < SCORE <= 55: # Instead of
+    # if FRAME % RAMP == 0 and PhaseFive:
+    #     SCORE -= 20 
+    '''
+    Previous comment is left in to show the possible customization
+    '''
+    if FRAME % RAMP == 0 and PhaseFive: # Lowers point penalty but increases frequency
         RAMP = 90
         SCORE -= 10
     # establishes the point thresholds and how many points are lost per 150 ticks
 
-    if FRAME % 15 == 0:
+    if FRAME % 20 == 0:
         all_sprites.remove(sweeps)
         sweeps.remove(sweeps)
     
@@ -344,10 +321,14 @@ while running:
     draw_text("CONTROLS", 24, WHITE, WIDTH - 150, 10)
     draw_text("Arrow keys:       Movement", 24, WHITE, WIDTH - 175, 30)   
     draw_text("R:       Reset Position", 24, WHITE, WIDTH - 116, 55)
+    draw_text("G:       Sweep", 24, WHITE, WIDTH - 150, 80 )
+    # if you add any controls to this section, add 25 to previous y level (80->105) and change Space: Float's to 130
     if HINT == 0:
         draw_text("Stuck? Question: Where might gravity not be an issue?", 24, WHITE, 500, 500)
     if HINT != 0:
-        draw_text("Space:       Float", 24, WHITE, WIDTH - 176, 80)
+        draw_text("Space:       Float", 24, WHITE, WIDTH - 177, 105)
+    if TIMER >= 10 and HINT == 0:
+        draw_text("Hint: Hold the spacebar to float.", 18, WHITE, 500, 550)
     if SCORE >= 56:
         draw_text("You won!", 50, WHITE, WIDTH / 2, HEIGHT / 2)  
     if SCORE < 0:
@@ -361,13 +342,15 @@ while running:
     pg.display.flip()
     FRAME += 1
     TIMER += 1 / 30
+    # adds to system timer and human timer
+    if SCORE >= 56:    
+        TIMER = 0
+    # game is reliant on TIMER. Stops the game without crashing or exiting. Player can still move and eat but no points are added
     if SWEEP_DELAY > 0:
         SWEEP_DELAY -= 1 / 60
     if SWEEP_DELAY < 0:
         SWEEP_DELAY = 0
-    # adds to system timer and human timer
-    if SCORE >= 56:    
-        TIMER = 0
+    # 
 
 
     

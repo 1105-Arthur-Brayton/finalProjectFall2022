@@ -25,4 +25,23 @@ TIMER = 0
 RAMP = 150
 # ramp sets the time in ticks when the score will decrease
 
-SWEEP_DELAY = 0
+# score. Starts at 5 because PhaseOne is slow
+SCORE = 5
+
+# simplifies the spawn block
+PhaseOne = SCORE <= 15
+PhaseTwo = 15 <= SCORE <= 25
+PhaseThree = 25 <= SCORE <= 35
+PhaseFour = 35 <= SCORE <= 45
+PhaseFive = 45 <= SCORE <= 55
+
+if SCORE <= 15:
+    Phase = 1
+if 15 <= SCORE <= 25:
+    Phase = 2
+if 25 <= SCORE <= 35:
+    Phase = 3
+if 35 <= SCORE <= 45:
+    Phase = 4
+if 45 <= SCORE <= 55:
+    Phase = 5
