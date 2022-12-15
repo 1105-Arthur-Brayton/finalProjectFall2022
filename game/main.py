@@ -229,7 +229,7 @@ while running:
   
 
     '''Begin 'spawn block' '''
-    if kill and SCORE == 15:
+    if kill and SCORE == 14:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -237,7 +237,7 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         enemies_on_screen += 1
-    elif kill and SCORE == 25:
+    if kill and SCORE == 24:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -245,7 +245,7 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         enemies_on_screen += 1
-    elif kill and SCORE == 35:
+    if kill and SCORE == 34:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -253,7 +253,7 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         enemies_on_screen += 1
-    elif kill and SCORE == 45:
+    if kill and SCORE == 44:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -261,7 +261,7 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         enemies_on_screen += 1
-    elif kill and SCORE == 55:
+    if kill and SCORE == 54:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -270,7 +270,7 @@ while running:
         enemies.add(e)
         enemies_on_screen += 1    
     # every time a point threshold is crossed, even if it isn't the first time, add another enemy
-    elif kill:
+    if kill:
         SCORE += 1
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
@@ -280,7 +280,7 @@ while running:
         enemies.add(e)
         enemies_killed += 1 
     
-    if sweep_kill and SCORE == 15:
+    if sweep_kill and SCORE == 14:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -288,7 +288,7 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         enemies_on_screen += 1
-    if sweep_kill and SCORE == 25:
+    if sweep_kill and SCORE == 24:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -296,7 +296,7 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         enemies_on_screen += 1
-    if sweep_kill and SCORE == 35:
+    if sweep_kill and SCORE == 34:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -304,7 +304,7 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         enemies_on_screen += 1
-    if sweep_kill and SCORE == 45:
+    if sweep_kill and SCORE == 44:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -312,7 +312,7 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         enemies_on_screen += 1
-    if sweep_kill and SCORE == 55:
+    if sweep_kill and SCORE == 54:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
