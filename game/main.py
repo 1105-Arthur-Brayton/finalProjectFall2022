@@ -51,8 +51,6 @@ class Player(Sprite):
     # what happens when certain keys are pressed
     def controls(self):
         keys = pg.key.get_pressed()
-        if keys[pg.K_r]:
-            self.pos = vec(WIDTH / 2, HEIGHT / 2) # resets position
         if keys[pg.K_LEFT]:
             self.acc.x = -2.5
         if keys[pg.K_RIGHT]:
@@ -320,7 +318,6 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         enemies_on_screen += 1    
-    # every time a point threshold is crossed, even if it isn't the first time, add another enemy
     if sweep_kill:
         SCORE += 1
         x = random.randint(15, WIDTH)
@@ -345,8 +342,15 @@ while running:
             # this does not apply while player is 'floating' with spacebar. that is by design to prevent collision issues
             # currently almost unused, but will be important if someone modifies this code and adjusts the positioning of platforms
     
-    
-
+    if player.pos.x < 0:
+        player.pos.x += WIDTH
+    if player.pos.x > WIDTH:
+        player.pos.x -= WIDTH
+    if player.pos.y <= 0:
+        player.pos = vec(WIDTH / 2, HEIGHT / 2)
+    if player.pos.y > HEIGHT:
+        player.pos = vec(0,0)    
+    # prevents player from being outside of the window borders
     if FRAME % RAMP == 0 and SCORE <= 15:
         SCORE -= 2
     if FRAME % RAMP == 0 and 15 <= SCORE <= 25:
@@ -367,8 +371,10 @@ while running:
 
     if FRAME % 30 == 0:
         sweep.rect.center = (player.rect.x + 10000, player.rect.y + 10000)
-        # all_sprites.remove(sweeps)
-        # sweeps.remove(sweeps)
+    # instead of removing each instance from sweep from the class of sweep, just move it offscreen
+    # this was done because pygame only looks for collisions between sprites and sprites or groups and groups
+    # because enemies and players are both under the sprites group, sweep would kill the player
+    # now there is only one instantiation of sweep that exists as a sprite
     
     ############ Draw ################
     # draw the background screen
@@ -380,13 +386,12 @@ while running:
     draw_text("Timer: " + str(int(TIMER)), 24, WHITE, WIDTH / 2, HEIGHT / 10)
     draw_text("CONTROLS", 24, WHITE, WIDTH - 150, 10)
     draw_text("Arrow keys:       Movement", 24, WHITE, WIDTH - 175, 30)   
-    draw_text("R:       Reset Position", 24, WHITE, WIDTH - 116, 55)
-    draw_text("G:       Sweep", 24, WHITE, WIDTH - 150, 80 )
-    # if you add any controls to this section, add 25 to previous y level (80->105) and change Space: Float's to 130
+    draw_text("G:       Sweep", 24, WHITE, WIDTH - 150, 55 )
+    # if you add any controls to this section, add 25 to previous y level (55->80) and change Space: Float's to 105
     if HINT == 0:
         draw_text("Stuck? Question: Where might gravity not be an issue?", 24, WHITE, 500, 500)
     if HINT != 0:
-        draw_text("Space:       Float", 24, WHITE, WIDTH - 177, 105)
+        draw_text("Space:       Float", 24, WHITE, WIDTH - 177, 80)
     if TIMER >= 10 and HINT == 0:
         draw_text("Hint: Hold the spacebar to float.", 18, WHITE, 500, 550)
     if SCORE >= 56:
@@ -411,7 +416,7 @@ while running:
         SWEEP_DELAY -= 1 / 60
     if SWEEP_DELAY < 0:
         SWEEP_DELAY = 0
-    # 
+    
 
 
     
