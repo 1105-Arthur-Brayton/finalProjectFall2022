@@ -1,39 +1,34 @@
-# finalProjectFall2022
+# Attack of the Cubes
 
-This videogame is intented to be a continuously more difficult and exciting game of racing the clock. With further development, this
+This videogame is intented to be a continuously more difficult and exciting game of racing the clock. With further development, this game will be perfect for scoreboards, glitch-abusers, and speedrunner.com followers.
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+Attack of the Cubes is the embodiment of exponentiality. It may start slowly, but don't fret; this game will get away from you if you can't keep your feet under you. With speed as your ally, you must bounce around fluidly, always keeping the next step in mind. Further updates may include other game modes, such as seeing how many points you can get in a certain time limit. Attack of the Cubes is an interesting take on the classic platformer style that incorporates modern gaming trends, such as leaderboards in coming updates.
 
 ## Getting Started
 
-Ensure that window dimensions found in settings are accomodated by your device
+Ensure that window dimensions found in settings are accomodated by your device.
 
 ### Dependencies
 
-Requires libraries Random and Pygame
+Requires libraries Pygame and Random.
 
 ### Installing
 
-Only required files are main.py and settings.py in the 'game' folder
-No modifications to files needed
+Only required files are main.py and settings.py in the 'game' folder.
+No modifications to files needed.
 
 ### Executing program
 
-Program will run on run command
-Program runs in a windowed screen with easy access to 'close application' button
-Pressing the escape button will also close the program
+Program will run on run command.
+Program runs in a windowed screen with easy access to the 'close application' button.
+Pressing the escape button will also close the program.
 
 
 ## Help
 
-Within spawn block, if changing the score requirements for each threshold:
-   'kill' will run through the entire spawn block, regardless of current score. What this means:
-      When crossing from one score threshold to the next, both will run.
-      My original files have the first score threshold set to 15, which means when you kill an enemy at SCORE = 14, the spawn block will add 1 to your score, summon
-      another enemy, then see that your score is 15, continue to run 'kill', add 1 to your score, then summon another enemy. This is the basis of the game in its
-      alpha version, but it is also fundamentally an error in the code. Because of this, SCORE will never = 15, 25, 35, or 45. Any changes to the spawn block must be         made with this knowledge in mind.
+Because of the fast-paced nature of this game, a large amount of my focus was to iron out bugs and heavily comment through my code. I will have to ask some fresh pairs of eyes for input on what they might not find clear.
    
 
 
@@ -44,6 +39,8 @@ braypo80@gmail.com
 
 ## Version History
 
+* 0.3
+    * The spawn block has been rewritten into a very intentional, stable basis. No longer the result of an error.
 * 0.2
     * Fixed collisions, working enemy counter, semi-implemented sweep function. Final Project submission
 * 0.1
