@@ -71,10 +71,7 @@ class Player(Sprite):
             global SWEEP_DELAY
             if keys[pg.K_g] and SWEEP_DELAY == 0:
                 # self.pos = vec(self.rect.x, self.rect.y)
-                color = TEAL
-                s = Sweep(150, 150, player.rect.x, player.rect.y, color)
-                all_sprites.add(s)
-                sweeps.add(s)
+                sweep.rect.center = (player.rect.x + 25, player.rect.y + 25)
                 SWEEP_DELAY += 1
         if keys[pg.K_ESCAPE]:
             pg.quit() # "pygame.error: display Surface quit" Still does what it's supposed to I guess
@@ -105,11 +102,11 @@ class Sweep(Sprite):
         Sprite.__init__(self)
         self.w = w
         self.h = h
-        self.image = pg.Surface((250, 250))
+        self.image = pg.Surface((w, h))
         self.image.fill(color)
         self.rect = self.image.get_rect()
         self.rect.center = (w/2, h/2)
-        self.rect.center = (player.rect.x, player.rect.y)
+        self.rect.center = (player.rect.x + 100000, player.rect.y + 100000)
         # self.pos = (player.pos.x, player.pos.y)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
@@ -168,24 +165,33 @@ clock = pg.time.Clock()
 all_sprites = pg.sprite.Group()
 all_platforms = pg.sprite.Group()
 enemies = pg.sprite.Group()
-sweeps = pg.sprite.Group()
+sweepy = pg.sprite.Group()
 
 # instantiate classes
 player = Player()
+sweep = Sweep(200, 200, player.rect.x + 100000, player.rect.y + 100000, TEAL)
 plat = Platform(WIDTH/2, HEIGHT/2 + 100, 100, 10)
 plat2 = Platform(0 - WIDTH / 2, HEIGHT/1.05, WIDTH * 2, 35) # Bottom
 plat3 = Platform(50, 200, 200, 10)
 plat4 = Platform(800, 375, 200, 10)
 plat5 = Platform(0 - WIDTH / 2, 0, WIDTH * 2, 10) # Top 
 # elevator = Elevator(0, 0, 50, 100, 10)
+sweepy.add(sweep)
 
 colors = [WHITE, RED, GREEN, BLUE]
+
+# for i in range(1):
+#     x = random.randint(0, WIDTH)
+#     y = random.randint(15, HEIGHT - 40)
+#     color = random.choice(colors)
+#     s = Sweep(150, 150, -500, -500, color) # allows the sweep class to be instati
+#     all_sprites.add(s)
+#     enemies.add(s)
+#     print(s)
 
 for i in range(1):
     x = random.randint(0, WIDTH)
     y = random.randint(15, HEIGHT - 40)
-    # movex = random.randint(-2, 2)
-    # movey = random.randint(-2, 2)
     color = random.choice(colors)
     e = Enemy(x, y, color, 25, 25)
     all_sprites.add(e)
@@ -219,10 +225,11 @@ while running:
     # sweeps.update()
     hits = pg.sprite.spritecollide(player, all_platforms, False)
     kill = pg.sprite.spritecollide(player, enemies, True) 
-   #gg sweep_kill = pg.sprite.spritecollide(sweeps, enemies, True)
-    
+    sweep_kill = pg.sprite.spritecollide(sweep, enemies, True) # why does this not work is it because sweep needs to move
+  
+
     '''Begin 'spawn block' '''
-    if kill and SCORE == 14:
+    if kill and SCORE == 15:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -230,7 +237,7 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         enemies_on_screen += 1
-    if kill and SCORE == 24:
+    elif kill and SCORE == 25:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -238,7 +245,7 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         enemies_on_screen += 1
-    if kill and SCORE == 34:
+    elif kill and SCORE == 35:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -246,7 +253,7 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         enemies_on_screen += 1
-    if kill and SCORE == 44:
+    elif kill and SCORE == 45:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -254,7 +261,7 @@ while running:
         all_sprites.add(e)
         enemies.add(e)
         enemies_on_screen += 1
-    if kill and SCORE == 54:
+    elif kill and SCORE == 55:
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
         color = random.choice(colors)
@@ -263,7 +270,7 @@ while running:
         enemies.add(e)
         enemies_on_screen += 1    
     # every time a point threshold is crossed, even if it isn't the first time, add another enemy
-    if kill:
+    elif kill:
         SCORE += 1
         x = random.randint(15, WIDTH)
         y = random.randint(15, HEIGHT - 40)
@@ -271,7 +278,58 @@ while running:
         e = Enemy(x, y, color, 25, 25)
         all_sprites.add(e)
         enemies.add(e)
-        enemies_killed += 1      
+        enemies_killed += 1 
+    
+    if sweep_kill and SCORE == 15:
+        x = random.randint(15, WIDTH)
+        y = random.randint(15, HEIGHT - 40)
+        color = random.choice(colors)
+        e = Enemy(x, y, color, 25, 25)
+        all_sprites.add(e)
+        enemies.add(e)
+        enemies_on_screen += 1
+    if sweep_kill and SCORE == 25:
+        x = random.randint(15, WIDTH)
+        y = random.randint(15, HEIGHT - 40)
+        color = random.choice(colors)
+        e = Enemy(x, y, color, 25, 25)
+        all_sprites.add(e)
+        enemies.add(e)
+        enemies_on_screen += 1
+    if sweep_kill and SCORE == 35:
+        x = random.randint(15, WIDTH)
+        y = random.randint(15, HEIGHT - 40)
+        color = random.choice(colors)
+        e = Enemy(x, y, color, 25, 25)
+        all_sprites.add(e)
+        enemies.add(e)
+        enemies_on_screen += 1
+    if sweep_kill and SCORE == 45:
+        x = random.randint(15, WIDTH)
+        y = random.randint(15, HEIGHT - 40)
+        color = random.choice(colors)
+        e = Enemy(x, y, color, 25, 25)
+        all_sprites.add(e)
+        enemies.add(e)
+        enemies_on_screen += 1
+    if sweep_kill and SCORE == 55:
+        x = random.randint(15, WIDTH)
+        y = random.randint(15, HEIGHT - 40)
+        color = random.choice(colors)
+        e = Enemy(x, y, color, 25, 25)
+        all_sprites.add(e)
+        enemies.add(e)
+        enemies_on_screen += 1    
+    # every time a point threshold is crossed, even if it isn't the first time, add another enemy
+    if sweep_kill:
+        SCORE += 1
+        x = random.randint(15, WIDTH)
+        y = random.randint(15, HEIGHT - 40)
+        color = random.choice(colors)
+        e = Enemy(x, y, color, 25, 25)
+        all_sprites.add(e)
+        enemies.add(e)
+        enemies_killed += 1           
     ''' end 'spawn block'  '''
    
     if player.vel.y > 0:
@@ -307,9 +365,10 @@ while running:
         SCORE -= 10
     # establishes the point thresholds and how many points are lost per 150 ticks
 
-    if FRAME % 20 == 0:
-        all_sprites.remove(sweeps)
-        sweeps.remove(sweeps)
+    if FRAME % 30 == 0:
+        sweep.rect.center = (player.rect.x + 10000, player.rect.y + 10000)
+        # all_sprites.remove(sweeps)
+        # sweeps.remove(sweeps)
     
     ############ Draw ################
     # draw the background screen
@@ -337,8 +396,9 @@ while running:
     # draws on-screen text
 
     # draw all sprites
+    sweepy.draw(screen)
     all_sprites.draw(screen)
-
+   
     # buffer - after drawing everything, flip display
     pg.display.flip()
     FRAME += 1
